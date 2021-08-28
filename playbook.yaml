@@ -1,0 +1,42 @@
+- hosts: <eks-cluster-host>
+  become: yes
+  vars:
+     helm_chart_url_prometheus: "https://s3bucketurl"
+     helm_chart_url_grafana: "https://s3bucketurl"
+     helm_chart_url_app: "https://s3bucketurl"
+  tasks:
+    - name: Add Prometheus repo
+        kubernetes.core.helm_repository:
+    	    name: prometheus
+    	    repo_url: "{{ helm_chart_url_prometheus }}"
+
+    - name: Install Prometheus Chart
+       kubernetes.core.helm:
+    	   name: prometheus-server
+    	   namespace: prometheus
+    	   chart_ref: <>
+
+    - name: Add Grafana repo
+        kubernetes.core.helm_repository:
+    	    name: grafana
+    	    repo_url: "{{ helm_chart_url_grafana }}"
+
+    - name: Install grafana Chart
+       kubernetes.core.helm:
+    	   name: grafana-server
+    	   namespace: grafana
+    	   chart_ref: <>
+
+    - name: Add hello-world repo
+        kubernetes.core.helm_repository:
+    	    name: hello-world
+    	    repo_url: "{{ helm_chart_url_app }}"
+
+    - name: Install hello-world Chart
+       kubernetes.core.helm:
+    	   name: hello-world-server
+    	   namespace: hello-world
+    	   chart_ref: <>
+        
+
+      
